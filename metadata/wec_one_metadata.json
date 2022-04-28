@@ -1,0 +1,19 @@
+{
+  "description": "Uniqe web collectible ONE.", 
+  "image": "https://gateway.pinata.cloud/ipfs/QmRWRmhnkSh5qbvQwiGvPWe88dD6ptYUz3kuiMA9cAJpEE", 
+  "name": "WEC_ONE",
+  "attributes": [
+    {
+      "trait_type": "Coolness", 
+      "value": "zapredel'naya"
+    }, 
+    {
+      "trait_type": "Type", 
+      "value": "Emerald"
+    }, 
+    {
+      "trait_type": "Lifetime(years)", 
+      "value": 999
+    }
+  ]
+}
