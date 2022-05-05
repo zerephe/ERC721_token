@@ -9,17 +9,25 @@ contract NumberCollectible is Ownable, ERC721URIStorage {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenId;
-
+    
+    mapping(bytes4 => bool) internal supportedInterfaces;
+    
     uint256 public maxSupply = 10;
     uint256 private mintFee = 0.0005 ether;
     string private tokenCID = "QmSeAyQ55prvUASLJpj4KN36NJRvDkSu18oKcMsM2scCSy";
 
-    constructor(string memory name, string memory symbol) ERC721(name, symbol) {}
+    constructor(string memory name, string memory symbol) ERC721(name, symbol) {
+        supportedInterfaces[type(IERC721).interfaceId] = true;
+    }
 
     function _baseURI(string memory _tokenCID) internal pure returns (string memory) {
         return string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/", _tokenCID));
     }
 
+    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {
+        return supportedInterfaces[interfaceId];
+    }
+    
     function safeMint(address to) external payable {
         require(totalSupply() <= maxSupply, "Mint limit exeeded!");
         require(msg.value >= mintFee || msg.sender == owner(), "Not enough fee!");
