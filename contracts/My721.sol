@@ -16,7 +16,6 @@ contract NumberCollectible is AccessControl, ERC721URIStorage {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     uint256 public maxSupply = 10;
-    uint256 private mintFee = 0.0005 ether;
     string private tokenCID = "QmSeAyQ55prvUASLJpj4KN36NJRvDkSu18oKcMsM2scCSy";
 
     constructor(string memory name, string memory symbol) ERC721(name, symbol) {
@@ -40,6 +39,17 @@ contract NumberCollectible is AccessControl, ERC721URIStorage {
         _tokenId.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, _baseURI(tokenCID));
+    }
+
+     function safeMintWithURI(string memory uri,address to) external onlyRole(MINTER_ROLE) returns(uint256){
+        require(totalSupply() <= maxSupply, "Mint limit exeeded!");
+
+        uint256 tokenId = _tokenId.current();
+        _tokenId.increment();
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
+        
+        return tokenId;
     }
 
     function totalSupply() public view returns(uint256) {

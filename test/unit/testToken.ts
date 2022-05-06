@@ -28,6 +28,10 @@ describe("NumberCollectible NFTs", function () {
       expect(await nftInstance.name()).to.eq("NumCol");
       expect(await nftInstance.symbol()).to.eq("NCOL");
     });
+
+    it("Should should support 721 interface", async function() {
+      expect(await nftInstance.supportsInterface(0x80ac58cd)).to.eq(true);
+    });
   });
 
   describe("Txs", function() {
@@ -44,16 +48,18 @@ describe("NumberCollectible NFTs", function () {
       await expect(nftInstance.safeMint(owner.address)).to.be.revertedWith("Mint limit exeeded!");
     });
 
-    it("Should be reverted if not enough fee sent", async function() {
-      await expect(nftInstance.connect(addr1).safeMint(addr1.address)).to.be.revertedWith("Not enough fee!");
+    it("Should have some nft after minting with uri and total supply, uri change", async function() {
+      await nftInstance.safeMintWithURI("new uri", owner.address);
+      expect(await nftInstance.balanceOf(owner.address)).to.eq(1);
+      expect(await nftInstance.totalSupply()).to.eq(1);
+      expect(await nftInstance.tokenURI(0)).to.eq("new uri");
     });
 
-    it("Should be possible to withdraw", async function() {
-      await nftInstance.connect(addr1).safeMint(addr1.address, {value: ethers.utils.parseEther("0.0005").toString()});
-
-      let _withdraw = await nftInstance.withdraw(owner.address);
-      await expect(() => _withdraw).to.changeEtherBalances([nftInstance, owner], [-ethers.utils.parseEther("0.0005").toString(), ethers.utils.parseEther("0.0005").toString()]);
-      await _withdraw.wait();
+    it("Should be reverted if mint limit exceeded", async function() {
+      for(let i = 0; i < 11; i++) {
+        await nftInstance.safeMintWithURI("new uri", owner.address);
+      }
+      await expect(nftInstance.safeMintWithURI("new uri", owner.address)).to.be.revertedWith("Mint limit exeeded!");
     });
   });
 });
