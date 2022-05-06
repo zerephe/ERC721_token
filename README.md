@@ -6,7 +6,7 @@ My first ERC721 token
 
 
 **Etherscan verified**
-`https://rinkeby.etherscan.io/address/0x3e6873Fe267617EfeE0B48cf9DfC6e8DD5f2fC79#code`
+`https://rinkeby.etherscan.io/address/0x80122a756DC6D24145069C6f87c144bdb4c52C7E#code`
 
 **My nft on Opensea**
-`https://testnets.opensea.io/assets/0x3e6873Fe267617EfeE0B48cf9DfC6e8DD5f2fC79/0/`
+`https://testnets.opensea.io/assets/0x80122a756DC6D24145069C6f87c144bdb4c52C7E/0/`
